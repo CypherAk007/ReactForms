@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName,setEnteredName] = useState('')
   const [enteredNameTouched,setEnteredNameTouched] = useState(false);
-
+  const [formIsValid,setFormIsValid] = useState(false);
   // we can eliminate enteredNameIsValid useState and replace it with varible as it will 
   // re render when any useState changes
   const enteredNameIsValid = enteredName.trim() !== '';
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
+  useEffect(()=>{
+    if (enteredNameIsValid){
+      setFormIsValid(true)
+    }else{
+      setFormIsValid(false)
+    }
+  },[enteredNameIsValid])
+  // dependencies in useEffect are all the useStates of the input feilds
 
   const nameInputChangeHandler = (event) =>{
     setEnteredName(event.target.value)
@@ -46,7 +54,7 @@ const SimpleInput = (props) => {
         {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
