@@ -7,6 +7,11 @@ const SimpleInput = (props) => {
 
   const nameInputChangeHandler = (event) =>{
     setEnteredName(event.target.value)
+
+    // onEvery key stroke we check  if input is valid 
+    if (event.target.value.trim()!==''){
+      setEnteredNameIsValid(true)
+    }
   }
 
   const nameInputBlurHandler = (event)=>{
@@ -15,7 +20,7 @@ const SimpleInput = (props) => {
     // we check if the user has not left the input feild empty.
     if (enteredName.trim()===''){
       setEnteredNameIsValid(false)
-      return
+      
     }
   }
   const onSubmitHandler = (event)=>{
