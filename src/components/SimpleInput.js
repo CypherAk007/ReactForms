@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName,setEnteredName] = useState('')
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
   const [enteredNameTouched,setEnteredNameTouched] = useState(false);
+
+  // we can eliminate enteredNameIsValid useState and replace it with varible as it will 
+  // re render when any useState changes
+  const enteredNameIsValid = enteredName.trim() !== '';
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+
 
   const nameInputChangeHandler = (event) =>{
     setEnteredName(event.target.value)
 
-    // onEvery key stroke we check  if input is valid 
-    if (event.target.value.trim()!==''){
-      setEnteredNameIsValid(true)
-    }
   }
 
   const nameInputBlurHandler = (event)=>{
     setEnteredNameTouched(true)
 
-    // we check if the user has not left the input feild empty.
-    if (enteredName.trim()===''){
-      setEnteredNameIsValid(false)
-      
-    }
   }
   const onSubmitHandler = (event)=>{
     event.preventDefault()
@@ -30,20 +26,16 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true)
 
     // If we have empty feild then do nothing
-    if (enteredName.trim()===''){
-      setEnteredNameIsValid(false)
+    if (!enteredNameIsValid){
       return
     }
 
     console.log(enteredName);
     setEnteredName('')
+    setEnteredNameTouched(false)
   }
 
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-  useEffect(()=>{
-    console.log(enteredName);
-  },[enteredName])
 
   const nameInputClasses = nameInputIsInvalid?'form-control invalid':'form-control'
   return (
